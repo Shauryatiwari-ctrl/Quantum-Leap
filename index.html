@@ -265,14 +265,14 @@
             transform: translateY(-3px);
         }
 
-        /* Hero Visual */
+        /* ADVANCED HERO VISUAL WITH ILLUSION EFFECTS */
         .hero-visual {
             position: absolute;
             right: 100px;
             top: 50%;
             transform: translateY(-50%);
-            width: 500px;
-            height: 500px;
+            width: 550px;
+            height: 550px;
             z-index: 1;
         }
 
@@ -280,44 +280,89 @@
             position: relative;
             width: 100%;
             height: 100%;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
+        /* Multiple Glowing Orbs */
         .glow-orb {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            filter: blur(80px);
+            background: radial-gradient(circle, rgba(255, 51, 51, 0.6) 0%, rgba(255, 51, 51, 0.3) 30%, transparent 70%);
+            filter: blur(60px);
             transform: translate(-50%, -50%);
-            animation: pulse 3s infinite;
+            animation: pulse-glow 4s ease-in-out infinite;
         }
 
-        @keyframes pulse {
+        .glow-orb::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 100, 100, 0.4) 0%, transparent 70%);
+            filter: blur(40px);
+            transform: translate(-50%, -50%);
+            animation: pulse-glow 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulse-glow {
             0%, 100% {
                 transform: translate(-50%, -50%) scale(1);
-                opacity: 0.6;
+                opacity: 0.8;
             }
             50% {
-                transform: translate(-50%, -50%) scale(1.2);
-                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 1;
             }
         }
 
+        /* Main Rotating Circle */
         .circle-frame {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 350px;
-            height: 350px;
+            width: 380px;
+            height: 380px;
+            border: 2px solid rgba(255, 51, 51, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate-3d 20s linear infinite;
+            box-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
+        }
+
+        @keyframes rotate-3d {
+            0% {
+                transform: translate(-50%, -50%) rotateY(0deg) rotateX(0deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotateY(180deg) rotateX(10deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotateY(360deg) rotateX(0deg);
+            }
+        }
+
+        /* Outer Ring - Opposite Rotation */
+        .circle-frame::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 450px;
+            height: 450px;
             border: 2px solid rgba(255, 51, 51, 0.2);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            animation: rotate 20s linear infinite;
+            animation: rotate-opposite 15s linear infinite reverse;
+            border-style: dashed;
         }
 
-        @keyframes rotate {
+        @keyframes rotate-opposite {
             from {
                 transform: translate(-50%, -50%) rotate(0deg);
             }
@@ -326,25 +371,227 @@
             }
         }
 
-        .circle-frame::before,
+        /* Inner Ring - Fast Spin */
         .circle-frame::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            border: 2px solid rgba(255, 51, 51, 0.1);
+            width: 280px;
+            height: 280px;
+            border: 2px solid rgba(255, 51, 51, 0.3);
             border-radius: 50%;
             transform: translate(-50%, -50%);
+            animation: spin-fast 8s linear infinite;
+            border-top-color: rgba(255, 51, 51, 0.8);
+            border-right-color: transparent;
         }
 
-        .circle-frame::before {
-            width: 400px;
-            height: 400px;
+        @keyframes spin-fast {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
         }
 
-        .circle-frame::after {
-            width: 300px;
-            height: 300px;
+        /* Floating Particles Around Circles */
+        .particle-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-red);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--primary-red), 0 0 40px var(--primary-red);
+        }
+
+        .particle-orbit:nth-child(1) {
+            animation: orbit 6s linear infinite;
+        }
+
+        .particle-orbit:nth-child(2) {
+            animation: orbit 8s linear infinite reverse;
+            animation-delay: -2s;
+        }
+
+        .particle-orbit:nth-child(3) {
+            animation: orbit 10s linear infinite;
+            animation-delay: -4s;
+        }
+
+        .particle-orbit:nth-child(4) {
+            animation: orbit 7s linear infinite reverse;
+            animation-delay: -1s;
+        }
+
+        @keyframes orbit {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) translateX(200px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg) translateX(200px) rotate(-360deg);
+                opacity: 0;
+            }
+        }
+
+        /* DNA Helix Style Lines */
+        .helix-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--primary-red), transparent);
+            transform-origin: center;
+            animation: helix-rotate 12s linear infinite;
+            opacity: 0.3;
+        }
+
+        .helix-line:nth-child(6) {
+            animation-delay: -4s;
+        }
+
+        .helix-line:nth-child(7) {
+            animation-delay: -8s;
+        }
+
+        @keyframes helix-rotate {
+            0% {
+                transform: translate(-50%, -50%) rotateZ(0deg) rotateY(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotateZ(360deg) rotateY(360deg);
+            }
+        }
+
+        /* Energy Waves */
+        .energy-wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--primary-red);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: wave-expand 3s ease-out infinite;
+            opacity: 0;
+        }
+
+        .energy-wave:nth-child(9) {
+            animation-delay: 1s;
+        }
+
+        .energy-wave:nth-child(10) {
+            animation-delay: 2s;
+        }
+
+        @keyframes wave-expand {
+            0% {
+                width: 100px;
+                height: 100px;
+                opacity: 0.8;
+            }
+            100% {
+                width: 500px;
+                height: 500px;
+                opacity: 0;
+            }
+        }
+
+        /* Floating Geometric Shapes */
+        .floating-shape {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 51, 51, 0.2);
+            backdrop-filter: blur(5px);
+            animation: float-around 15s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(11) {
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(12) {
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            animation-delay: -5s;
+        }
+
+        .floating-shape:nth-child(13) {
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float-around {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateX(150px) translateY(0px) rotate(0deg);
+            }
+            25% {
+                transform: translate(-50%, -50%) translateX(0px) translateY(150px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateX(-150px) translateY(0px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-50%, -50%) translateX(0px) translateY(-150px) rotate(270deg);
+            }
+        }
+
+        /* Glitch Effect on Hover */
+        .visual-container:hover .circle-frame {
+            animation: rotate-3d 20s linear infinite, glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                transform: translate(-50%, -50%) rotateY(0deg);
+            }
+            25% {
+                transform: translate(-50%, -50%) rotateY(2deg) translateX(2px);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotateY(-2deg) translateX(-2px);
+            }
+            75% {
+                transform: translate(-50%, -50%) rotateY(1deg) translateX(1px);
+            }
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-red), transparent);
+            transform: translateX(-50%);
+            animation: scan 4s linear infinite;
+            opacity: 0.5;
+            filter: blur(1px);
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+            100% {
+                top: 100%;
+            }
         }
 
         /* Stats Section */
@@ -805,8 +1052,8 @@
                 top: 0;
                 transform: none;
                 width: 100%;
-                max-width: 300px;
-                height: 300px;
+                max-width: 350px;
+                height: 350px;
                 margin: 40px auto 0;
             }
 
@@ -903,10 +1150,38 @@
             </div>
         </div>
 
+        <!-- ADVANCED HERO VISUAL WITH 10 ILLUSION EFFECTS -->
         <div class="hero-visual">
             <div class="visual-container">
+                <!-- Glowing Core -->
                 <div class="glow-orb"></div>
+
+                <!-- Main Rotating Circles -->
                 <div class="circle-frame"></div>
+
+                <!-- Orbiting Particles -->
+                <div class="particle-orbit"></div>
+                <div class="particle-orbit"></div>
+                <div class="particle-orbit"></div>
+                <div class="particle-orbit"></div>
+
+                <!-- DNA Helix Lines -->
+                <div class="helix-line"></div>
+                <div class="helix-line"></div>
+                <div class="helix-line"></div>
+
+                <!-- Energy Waves -->
+                <div class="energy-wave"></div>
+                <div class="energy-wave"></div>
+                <div class="energy-wave"></div>
+
+                <!-- Floating Geometric Shapes -->
+                <div class="floating-shape"></div>
+                <div class="floating-shape"></div>
+                <div class="floating-shape"></div>
+
+                <!-- Scanline Effect -->
+                <div class="scanline"></div>
             </div>
         </div>
     </section>
